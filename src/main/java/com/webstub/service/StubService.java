@@ -13,6 +13,4 @@ public interface StubService {
     List<Stub> getAll();
 
     void deleteStub(Stub stub);
-
-    void setActiveScript(String stubName, String scriptName);
 }

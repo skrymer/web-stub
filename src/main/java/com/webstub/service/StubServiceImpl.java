@@ -35,13 +35,4 @@ public class StubServiceImpl implements StubService {
     public void deleteStub(Stub stub) {
         stubRepository.delete(stub);
     }
-
-    @Override
-    public void setActiveScript(String stubName, String scriptName) {
-			Stub stub = stubRepository.findByName(stubName);
-
-			stub.setActiveScript(scriptName);
-
-			stubRepository.save(stub);
-    }
 }

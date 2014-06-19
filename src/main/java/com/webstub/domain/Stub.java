@@ -6,79 +6,79 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.webstub.util.SyntacticSugar.safe;
-
 @Document(collection = "stub")
 public class Stub {
-    @Id
-    private String id;
-    private String name;
-    private Script activeScript;
-    private List<Script> scripts;
+	@Id
+	private String id;
+	private String name;
+	private Script activeScript;
+	private List<Script> scripts;
 
-    public Stub(){}
+	public Stub() {
+	}
 
-    public Stub(String name, List<Script> scripts){
-        this.name = name;
-        this.scripts = new ArrayList<>(scripts);
-    }
+	public Stub(String name, List<Script> scripts) {
+		this.name = name;
+		this.scripts = new ArrayList<>(scripts);
+	}
 
-    public String getId() {
-        return id;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public String getName(){
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public Script getActiveScript() {
-        return activeScript;
-    }
+	public Script getActiveScript() {
+		return activeScript;
+	}
 
-    public void setActiveScript(Script activeScript) {
-        this.activeScript = activeScript;
-    }
+	public void setActiveScript(Script activeScript) {
+		this.activeScript = activeScript;
+	}
 
-    public void setActiveScript(String scriptName) {
-        for (Script script : safe(scripts)){
-            if(script.getName().equals(scriptName)){
-                setActiveScript(script);
-            }
-        }
-    }
+	public Script getScript(String name){
+		for(Script script : scripts){
+			if(script.getName().toLowerCase().contains(name)){
+				return script;
+			}
+		}
 
-    public List<Script> getScripts() {
-        return scripts;
-    }
+		return null;
+	}
 
-    public void setScripts(List<Script> scripts){
-        this.scripts = scripts;
-    }
+	public List<Script> getScripts() {
+		return scripts;
+	}
 
-    @Override
-    public boolean equals(Object obj) {
-        if( !(obj instanceof Stub)){
-            return false;
-        }
+	public void setScripts(List<Script> scripts) {
+		this.scripts = scripts;
+	}
 
-        Stub toCompare = (Stub) obj;
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof Stub)) {
+			return false;
+		}
 
-        return this.name.equals(toCompare.name);
-    }
+		Stub toCompare = (Stub) obj;
 
-    @Override
-    public int hashCode() {
-        return this.name.hashCode();
-    }
+		return this.name.equals(toCompare.name);
+	}
 
-    @Override
-    public String toString() {
-        StringBuilder toStringBuilder = new StringBuilder();
-        toStringBuilder.append("\nName: ").append(name);
-        toStringBuilder.append("\nActive script: ").append(activeScript);
-        toStringBuilder.append("\nNumber of scripts: " + (scripts != null ? scripts.size() : "0"));
+	@Override
+	public int hashCode() {
+		return this.name.hashCode();
+	}
 
-        return toStringBuilder.toString();
-    }
+	@Override
+	public String toString() {
+		StringBuilder toStringBuilder = new StringBuilder();
+		toStringBuilder.append("\nName: ").append(name);
+		toStringBuilder.append("\nActive script: ").append(activeScript);
+		toStringBuilder.append("\nNumber of scripts: " + (scripts != null ? scripts.size() : "0"));
 
+		return toStringBuilder.toString();
+	}
 }

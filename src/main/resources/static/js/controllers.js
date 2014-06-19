@@ -19,7 +19,6 @@ function StubManagementController($scope, $http) {
 
     $scope.editScript = function(script){
         $scope.activeScript = script
-
         setEditorContent(script.content)
     }
 
@@ -28,28 +27,32 @@ function StubManagementController($scope, $http) {
 
         if($scope.activeStub.scripts){
             $scope.activeScript = $scope.activeStub.scripts[0]
-
             setEditorContent($scope.activeScript.content)
         }
     }
 
-    $scope.setActiveScript = function(index){
+    $scope.setActiveScript = function(script){
+        $scope.activeStub.activeScript = script
 
+        $http.put('/api/', $scope.activeStub)
+            .success(function(data) {
+                $.notify("Active script is now: " + script.name, "success")
+            })
+            .error(function() {
+                $.notify("BOOM! Could not set active script" , "error")
+            })
     }
 
     $scope.saveScript = function(){
         $scope.activeScript.content = getEditorContent()
 
         $http.put('/api/', $scope.activeStub)
-             .success(function(data) {
-                $.pnotify( {
-                    pnotify_title: "Some title",
-                    pnotify_type: "error"
-                })
-             })
-             .error(function() {
-
-             })
+            .success(function(data) {
+                $.notify("Script was saved", "success")
+            })
+            .error(function() {
+                $.notify("BOOM! Could not save script" , "error")
+            })
     }
 
     $scope.deleteActiveStub = function() {
