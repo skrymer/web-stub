@@ -20,7 +20,7 @@ public class StubController {
     private StubService stubService;
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
-    public Stub save(@RequestBody Stub stub){
+    public Stub create(@RequestBody Stub stub){
         LOG.info("Received stub: " + stub);
 
         return stubService.createStub(stub);

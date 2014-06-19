@@ -68,14 +68,27 @@ class StubRepositorySpec extends Specification {
 
     def "find all stubs"(){
         setup:
-            sut.save(stub())
-            sut.save(stub())
+            mongoTemplate.save(stub())
+            mongoTemplate.save(stub())
 
         when: "Finding all stubs"
             def stubs = sut.findAll()
 
         then: "return all stubs"
             stubs.size() == 2
+    }
+
+    def "find by name"(){
+        def name = "name"
+
+        setup:
+            mongoTemplate.save(stub())
+
+        when: "find a stub by name"
+            def actualStub = sut.findByName(name)
+
+        then: "the stub with the given name is returned"
+            actualStub.getName() == name
     }
 
     def stub(){

@@ -34,6 +34,7 @@ function StubManagementController($scope, $http) {
     }
 
     $scope.setActiveScript = function(index){
+
     }
 
     $scope.saveScript = function(){

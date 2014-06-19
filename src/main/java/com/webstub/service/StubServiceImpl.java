@@ -1,12 +1,10 @@
 package com.webstub.service;
 
-import com.webstub.domain.Script;
 import com.webstub.domain.Stub;
 import com.webstub.repository.StubRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.LinkedList;
 import java.util.List;
 
 @Component
@@ -14,8 +12,8 @@ public class StubServiceImpl implements StubService {
     private StubRepository stubRepository;
 
     @Autowired
-    public StubServiceImpl(StubRepository httpStubRepository){
-        this.stubRepository = httpStubRepository;
+    public StubServiceImpl(StubRepository stubRepository){
+        this.stubRepository = stubRepository;
     }
 
     @Override
@@ -40,13 +38,10 @@ public class StubServiceImpl implements StubService {
 
     @Override
     public void setActiveScript(String stubName, String scriptName) {
-        Stub stub = new Stub();
-        List<Script> scripts = new LinkedList<>();
-        scripts.add(new Script(1, scriptName, "path", "content"));
+			Stub stub = stubRepository.findByName(stubName);
 
-        stub.setScripts(scripts);
-        stub.setActiveScript(scriptName);
+			stub.setActiveScript(scriptName);
 
-        stubRepository.save(stub);
+			stubRepository.save(stub);
     }
 }
