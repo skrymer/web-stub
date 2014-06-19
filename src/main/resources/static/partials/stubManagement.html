@@ -1,43 +1,39 @@
 <div class="row" ng-controller="StubManagementController" >
     <div class="col-md-9">
         <pre id="editor"></pre>
-    </div>
-    <div class="col-md-3 ">
-        <div class="panel panel-default">
-            <div class="panel-heading">Stub</div>
-            <ul class="nav nav-list">
-                <select id="selectStub">
-                    <option ng-repeat="stub in stubs" ng-click="setActiveStub($index)">{{stub.name}}</option>
-                </select>
-            </ul>
-        </div>
-
-        <div class="panel panel-default">
-            <div class="panel-heading">Active script</div>
-            <ul class="nav nav-list">
-                <select id="selectActiveScript">
-                    <option ng-repeat="script in activeStub.scripts" ng-click="setActiveScript($index)">{{script.name}}</option>
-                </select>
-            </ul>
-        </div>
-
-        <div class="panel panel-default">
-            <div class="panel-heading">Script editing</div>
-            <ul class="nav nav-list">
-                <select id="scriptEditing">
-                    <option data-ng-repeat="script in activeStub.scripts" ng-click="editScript(script)">{{script.name}}</option>
-                </select>
-            </ul>
-            <div>
-                <button type="button" class="btn btn-default btn-lg" ng-click="saveScript()">
-                    <span class="glyphicon glyphicon-save">save</span>
-                </button>
-            </div>
-        </div>
         <div>
-            <button type="button" class="btn btn-default btn-lg" ng-click="deleteActiveStub()">
-                <span class="glyphicon glyphicon-remove">delete</span>
+            <button type="button" class="btn btn-primary" ng-click="saveScript()">
+                <span class="glyphicon glyphicon-save">save</span>
             </button>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <div class="panel-heading">Stub controls</div>
+            <div class="row">
+                <div class="col-md-7"><label for="selectStub">Select stub</label></div>
+                <div class="col-md-5">
+                    <select id="selectStub">
+                        <option ng-repeat="stub in stubs" ng-click="setActiveStub($index)">{{stub.name}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-7"><label for="selectActiveScript">Select active script</label></div>
+                <div class="col-md-5">
+                    <select id="selectActiveScript">
+                        <option ng-repeat="script in activeStub.scripts" ng-click="setActiveScript(script)">{{script.name}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-7"><label for="scriptEditing">Edit script</label></div>
+                <div class="col-md-5">
+                    <select id="scriptEditing">
+                        <option data-ng-repeat="script in activeStub.scripts" ng-click="editScript(script)">{{script.name}}</option>
+                    </select>
+                </div>
+            </div>
         </div>
     </div>
 </div>

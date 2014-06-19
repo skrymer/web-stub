@@ -29,8 +29,8 @@ class StubRepositorySpec extends Specification {
         then: "the stub has been saved in mongo"
             def savedStub = mongoTemplate.findAll(Stub.class).get(0)
 
-            savedStub.getName()          == newStub.getName()
-            savedStub.getScripts()       == newStub.getScripts()
+            savedStub.getName()     == newStub.getName()
+            savedStub.getScripts()  == newStub.getScripts()
     }
 
     def "update"(){
@@ -52,6 +52,20 @@ class StubRepositorySpec extends Specification {
             updatedScript.getName()     ==  "updated"
             updatedScript.getPath()     ==  "updated path"
             updatedScript.getContent()  ==  "Updated content"
+    }
+
+    def "set active script"(){
+        setup:
+            mongoTemplate.save(stub())
+            def existingStub = mongoTemplate.findAll(Stub.class).get(0)
+
+        when: "setting a stubs active script"
+            def activeScript = existingStub.getScript("script1")
+            existingStub.setActiveScript(activeScript)
+            sut.save(existingStub)
+
+        then: "the active script has been set"
+           mongoTemplate.findAll(Stub.class).get(0).getActiveScript().getName() == activeScript.getName()
     }
 
     def "delete"(){
@@ -92,8 +106,8 @@ class StubRepositorySpec extends Specification {
     }
 
     def stub(){
-        def script1 = new com.webstub.domain.Script(1, "name", "path", "Some content")
-        def script2 = new com.webstub.domain.Script(2, "name2", "path2", "Some content2")
+        def script1 = new com.webstub.domain.Script(1, "script1", "path", "Some content")
+        def script2 = new com.webstub.domain.Script(2, "script2", "path2", "Some content2")
 
         return new Stub("name", [script1, script2])
     }
