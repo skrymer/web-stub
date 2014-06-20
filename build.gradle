@@ -4,7 +4,7 @@ buildscript {
         mavenLocal()
     }
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.0.2.RELEASE")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.1.1.RELEASE")
     }
 }
 
@@ -24,10 +24,7 @@ repositories {
 }
 
 dependencies {
-    compile('org.springframework.boot:spring-boot-starter-thymeleaf') {
-        exclude module: 'spring-boot-starter-tomcat'
-    }
-    compile 'org.springframework.boot:spring-boot-starter-jetty'
+    compile('org.springframework.boot:spring-boot-starter-thymeleaf')
     compile 'org.springframework.boot:spring-boot-starter-data-mongodb'
     compile 'org.webjars:angularjs:1.2.16'
     compile 'org.webjars:jquery:1.9.1'
@@ -38,7 +35,7 @@ dependencies {
     testCompile 'junit:junit'
     testCompile 'org.spockframework:spock-spring:0.7-groovy-2.0'
     testCompile 'org.springframework:spring-test'
-    testCompile 'com.github.fakemongo:fongo:1.4.5'
+    testCompile 'com.github.fakemongo:fongo:1.5.1'
 }
 
 task wrapper(type: Wrapper) {
