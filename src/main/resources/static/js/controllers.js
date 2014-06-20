@@ -95,7 +95,7 @@ function StubCreationController($scope, $http) {
 
     $scope.addNewScript = function(script) {
         var newScriptNo = $scope.scripts.length+1;
-        $scope.scripts.push({'id':newScriptNo, 'name': script.name, 'path' : script.path});
+        $scope.scripts.push({'id':newScriptNo, 'name': script.name});
     };
 
     $scope.showAddScript = function(script) {
@@ -110,11 +110,11 @@ function StubCreationController($scope, $http) {
 /**
  *
  * @param scope
- * @returns the scripts that has been created with a name and a path
+ * @returns the scripts that has been created with a name
  */
 function getNewScripts(scripts){
     return $.map(scripts, function(script) {
-            return (script.name != null && script.path != null) ? script : null;
+            return (script.name != null) ? script : null;
         });
 }
 

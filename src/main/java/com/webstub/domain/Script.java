@@ -2,14 +2,13 @@ package com.webstub.domain;
 
 public class Script {
     private Integer id;
-    private String name, path, content;
+    private String name, content;
 
     public Script(){}
 
-    public Script(Integer id, String name, String path, String content){
+    public Script(Integer id, String name, String content){
         this.id = id;
         this.name = name;
-        this.path = path;
         this.content = content;
     }
 
@@ -21,17 +20,13 @@ public class Script {
         return name;
     }
 
-    public String getPath() {
-        return path;
-    }
-
     public String getContent() {
         return content;
     }
 
     @Override
     public int hashCode() {
-        return this.name.hashCode() + this.path.hashCode() + content.hashCode();
+        return this.name.hashCode() + content.hashCode();
     }
 
     @Override
@@ -42,7 +37,7 @@ public class Script {
 
         Script compareTo = (Script)other;
 
-        if(this.name.equals(compareTo.getName()) && this.path.equals(compareTo.getPath()) && this.content.equals(compareTo.getContent())){
+        if(this.name.equals(compareTo.getName()) && this.content.equals(compareTo.getContent())){
             return true;
         }
 
@@ -51,10 +46,7 @@ public class Script {
 
     @Override
     public String toString() {
-        StringBuilder toStringBuilder = new StringBuilder();
-        toStringBuilder.append("Name: ").append(name);
-        toStringBuilder.append("\nPath: ").append(path);
-
-        return toStringBuilder.toString();
+        return new StringBuilder().append("Name: ")
+																	.append(name).toString();
     }
 }

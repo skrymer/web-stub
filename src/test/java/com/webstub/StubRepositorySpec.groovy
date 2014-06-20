@@ -39,7 +39,7 @@ class StubRepositorySpec extends Specification {
             def Stub existingStub = mongoTemplate.findAll(Stub.class).get(0)
 
         when: "updating a stub"
-            def newScript = new com.webstub.domain.Script(1, "updated", "updated path", "Updated content")
+            def newScript = new com.webstub.domain.Script(1, "updated", "Updated content")
             existingStub.setScripts([newScript])
 
             sut.save(existingStub)
@@ -50,7 +50,6 @@ class StubRepositorySpec extends Specification {
 
             mongoTemplate.findAll(Stub.class).size() == 1
             updatedScript.getName()     ==  "updated"
-            updatedScript.getPath()     ==  "updated path"
             updatedScript.getContent()  ==  "Updated content"
     }
 
@@ -105,9 +104,11 @@ class StubRepositorySpec extends Specification {
             actualStub.getName() == name
     }
 
+// Helper functions
+
     def stub(){
-        def script1 = new com.webstub.domain.Script(1, "script1", "path", "Some content")
-        def script2 = new com.webstub.domain.Script(2, "script2", "path2", "Some content2")
+        def script1 = new com.webstub.domain.Script(1, "script1", "Some content")
+        def script2 = new com.webstub.domain.Script(2, "script2", "Some content2")
 
         return new Stub("name", [script1, script2])
     }

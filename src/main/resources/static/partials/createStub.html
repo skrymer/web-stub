@@ -9,10 +9,7 @@
     <div id="scripts" class="form-group" data-ng-repeat="script in scripts">
         <label class="col-sm-2" ng-show="showScriptLabel(script)">Scripts</label>
         <button class="col-sm-2 btn btn-primary " type="button" ng-show="showAddScript(script)" ng-click="addNewScript(script)">Add another script</button>
-        <div class="right col-sm-5" style="float:right">
-            <input type="text" class="form-control" ng-model="script.path" placeholder="Enter a script path">
-        </div>
-        <div class="right col-sm-5" style="float:right">
+        <div class="right col-sm-10" style="float:right">
             <input type="text" class="form-control" ng-model="script.name" placeholder="Enter a script name">
         </div>
     </div>
