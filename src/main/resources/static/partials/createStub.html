@@ -1,12 +1,12 @@
 <form class="form-horizontal" role="form" ng-submit="createStub(stub)" ng-controller="StubCreationController">
-    <div class="form-group" ng-class="{'has-error': myForm.name.$invalid}">
+    <div class="form-group">
         <label class="col-sm-2" for="stubName">Stub name</label>
         <div class="col-sm-10">
-            <input type="text" class="form-control" id="stubName" placeholder="enter name" ng-model="stub.name" required>
+            <input type="text" name="name" class="form-control" id="stubName" placeholder="enter name" ng-model="stub.name" required>
         </div>
     </div>
 
-    <div id="scripts" class="form-group" data-ng-repeat="script in scripts" ng-class="{'has-error': myForm.name.$invalid}">
+    <div id="scripts" class="form-group" data-ng-repeat="script in scripts">
         <label class="col-sm-2" ng-show="showScriptLabel(script)">Scripts</label>
         <button class="col-sm-2 btn btn-primary " type="button" ng-show="showAddScript(script)" ng-click="addNewScript(script)">Add another script</button>
         <div class="right col-sm-10" style="float:right">
