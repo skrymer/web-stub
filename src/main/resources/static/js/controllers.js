@@ -18,7 +18,7 @@ function StubManagementController($scope, $http) {
         });
 
     $scope.editScript = function(script){
-        $scope.activeScript = script
+        $scope.activeScript = script;
         setEditorContent(script.content)
     }
 
@@ -81,16 +81,16 @@ function getEditorContent(){
 function StubCreationController($scope, $http) {
     $scope.scripts = [{id:1}, {id:2}]
 
-    $scope.createNewStub = function(stub) {
-        stub.scripts = getNewScripts($scope.scripts)
+    $scope.createStub = function(stub) {
+        stub.scripts = $scope.scripts
 
         $http.post('/api/', stub)
              .success( function(data) {
-
+                $.notify("Stub was created", "success")
              })
-             .error( function() {
-
-            });
+             .error(function() {
+                $.notify("BOOM! Could not create stub" , "error")
+             })
     }
 
     $scope.addNewScript = function(script) {
@@ -105,17 +105,6 @@ function StubCreationController($scope, $http) {
     $scope.showScriptLabel = function (script) {
         return script.id === $scope.scripts[0].id;
     }
-}
-
-/**
- *
- * @param scope
- * @returns the scripts that has been created with a name
- */
-function getNewScripts(scripts){
-    return $.map(scripts, function(script) {
-            return (script.name != null) ? script : null;
-        });
 }
 
 
