@@ -14,14 +14,15 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Component
 public class HttpRequestHandler implements RequestHandler<HttpServletRequest, HttpServletResponse> {
-  public static final String HTTP_REQUEST_PARAM_STUB = "stub";
   private StubService stubService;
   private ScriptExecutor scriptExecutor;
+  private StubNameResolver stubNameResolver;
 
   @Autowired
-  public HttpRequestHandler(ScriptExecutor scriptExecutor, StubService stubService) {
+  public HttpRequestHandler(ScriptExecutor scriptExecutor, StubService stubService, StubNameResolver stubNameResolver) {
     this.scriptExecutor = scriptExecutor;
     this.stubService = stubService;
+    this.stubNameResolver = stubNameResolver;
   }
 
   @Override
@@ -31,17 +32,9 @@ public class HttpRequestHandler implements RequestHandler<HttpServletRequest, Ht
   }
 
   private Stub findStubForRequest(HttpServletRequest request) {
-    String name = getStubNameFromRequest(request);
+    String name = stubNameResolver.resolve(request);
 
     return stubService.findStubByName(name);
-  }
-
-  private String getStubNameFromRequest(HttpServletRequest request) {
-    String name = request.getParameter(HTTP_REQUEST_PARAM_STUB);
-
-    if (name != null) return name;
-
-    return "";
   }
 
   private void executeActiveScript(Stub stub, HttpServletRequest request, HttpServletResponse response) {
