@@ -26,18 +26,29 @@ public class HttpRequestHandler implements RequestHandler<HttpServletRequest, Ht
 
   @Override
   public void handle(HttpServletRequest request, HttpServletResponse response) {
-    Stub stub = stubService.findStubByName(getStubNameFromRequest(request));
+    Stub stub = findStubForRequest(request);
+    executeActiveScript(stub, request, response);
+  }
 
-    scriptExecutor.execute(stub.getActiveScript(), request, response);
+  private Stub findStubForRequest(HttpServletRequest request) {
+    String name = getStubNameFromRequest(request);
+
+    return stubService.findStubByName(name);
   }
 
   private String getStubNameFromRequest(HttpServletRequest request) {
     String name = request.getParameter(HTTP_REQUEST_PARAM_STUB);
 
-    if (name != null) {
-      return name;
-    }
+    if (name != null) return name;
 
     return "";
+  }
+
+  private void executeActiveScript(Stub stub, HttpServletRequest request, HttpServletResponse response) {
+    if (stub.getActiveScript() == null) {
+      throw new NoActiveScriptIsSetException("No active script is set for stub " + stub.getName());
+    }
+
+    scriptExecutor.execute(stub.getActiveScript(), request, response);
   }
 }

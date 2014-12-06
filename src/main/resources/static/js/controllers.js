@@ -56,15 +56,17 @@ function StubManagementController($scope, $http) {
     }
 
     $scope.deleteActiveStub = function () {
-        $http.delete('/api/', $scope.activeStub)
+        $http.delete('/api/' + $scope.activeStub.name)
             .success(function () {
                 //Remove deleted stub from scope
                 $scope.stubs = $.map($scope.stubs, function (stub) {
-                    return (stub.name != $scope.activeStub) ? stub : null;
+                    return (stub.name != $scope.activeStub.name) ? stub : null;
                 })
 
                 //Set active stub to the first stub in the list
                 $scope.activeStub = $scope.stubs[0]
+
+                setEditorContent("")
 
                 $.notify("Stub was delete", "success")
             })
@@ -106,7 +108,8 @@ function StubCreationController($scope, $http) {
     };
 
     $scope.showAddScript = function (script) {
-        return script.id === $scope.scripts[$scope.scripts.length - 1].id;
+        //There is more than 1 script and script is last
+        return ($scope.scripts.length != 1 && script.id === $scope.scripts[$scope.scripts.length - 1].id);
     };
 
     $scope.showScriptLabel = function (script) {

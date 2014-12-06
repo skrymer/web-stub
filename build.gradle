@@ -1,3 +1,7 @@
+applicationDefaultJvmArgs = [
+        "-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005"
+]
+
 buildscript {
     repositories {
         maven { url "http://repo.spring.io/libs-milestone" }

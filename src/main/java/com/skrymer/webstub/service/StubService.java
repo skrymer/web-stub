@@ -12,7 +12,7 @@ public interface StubService {
 
   List<Stub> getAll();
 
-  void deleteStub(Stub stub);
+  void deleteStubByName(String stubName);
 
   Stub findStubByName(String name);
 }

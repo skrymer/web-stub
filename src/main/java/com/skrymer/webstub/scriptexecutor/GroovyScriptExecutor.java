@@ -5,10 +5,12 @@ import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.codehaus.groovy.control.CompilationFailedException;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 import static com.skrymer.webstub.util.SyntacticSugar.throwIllegalArgumentExceptionIfNull;
 
@@ -24,21 +26,27 @@ public class GroovyScriptExecutor implements ScriptExecutor {
 
   @Override
   public void execute(Script script, HttpServletRequest request, HttpServletResponse response) {
-    throwIllegalArgumentExceptionIfNull(script, "script");
-    throwIllegalArgumentExceptionIfNull(request, "request");
-    throwIllegalArgumentExceptionIfNull(response, "response");
+    checkParameters(script, request, response);
 
     try {
       Binding bindings = createBindings(script, request, response);
       executeScript(script, bindings);
-    } catch (Exception e) {
-      LOG.error("Could not execute script", e);
-
-      throw new CouldNotExecuteScriptException("Could not execute script", e);
+    } catch (IOException ioe) {
+      LOG.error("Could not execute script", ioe);
+      throw new CouldNotExecuteScriptException("Could not execute script", ioe);
+    } catch (CompilationFailedException cfe) {
+      LOG.error("Could not execute script", cfe);
+      throw new CouldNotExecuteScriptException("Could not execute script", cfe);
     }
   }
 
-  private Binding createBindings(Script script, HttpServletRequest request, HttpServletResponse response) throws Exception {
+  private void checkParameters(Script script, HttpServletRequest request, HttpServletResponse response) {
+    throwIllegalArgumentExceptionIfNull(script, "script");
+    throwIllegalArgumentExceptionIfNull(request, "request");
+    throwIllegalArgumentExceptionIfNull(response, "response");
+  }
+
+  private Binding createBindings(Script script, HttpServletRequest request, HttpServletResponse response) throws IOException {
     Binding binding = new Binding();
 
     binding.setVariable(BINDING_VAR_REQUEST, request);
@@ -51,13 +59,14 @@ public class GroovyScriptExecutor implements ScriptExecutor {
   }
 
   private void executeScript(Script script, Binding bindings) {
-    String scriptContent = script.getContent();
+    throwScriptContentIsEmptyExceptionIfEmpty(script);
 
-    if (scriptContent == null || scriptContent.isEmpty()) {
+    new GroovyShell(bindings).evaluate(script.getContent());
+  }
+
+  private void throwScriptContentIsEmptyExceptionIfEmpty(Script script) {
+    if (script.getContent() == null || script.getContent().isEmpty()) {
       throw new ScriptContentIsEmptyException("Script content is empty for script: " + script.getName());
     }
-
-    GroovyShell shell = new GroovyShell(bindings);
-    shell.evaluate(script.getContent());
   }
 }

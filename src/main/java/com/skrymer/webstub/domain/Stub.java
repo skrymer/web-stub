@@ -37,11 +37,7 @@ public class Stub {
   }
 
   public void setActiveScript(Script activeScript) {
-    for (Script script : safe(scripts)) {
-      if (script.getName().equals(activeScript.getName())) {
-        this.activeScript = activeScript;
-      }
-    }
+    this.activeScript = activeScript;
   }
 
   public Script getScript(String name) {

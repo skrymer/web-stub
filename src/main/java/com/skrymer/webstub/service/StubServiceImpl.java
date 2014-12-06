@@ -37,8 +37,8 @@ public class StubServiceImpl implements StubService {
   }
 
   @Override
-  public void deleteStub(Stub stub) {
-    stubRepository.delete(stub);
+  public void deleteStubByName(String stubName) {
+    stubRepository.deleteStubByName(stubName);
   }
 
   @Override

@@ -7,13 +7,6 @@ import com.skrymer.webstub.service.StubService
 import com.skrymer.webstub.service.StubServiceImpl
 import spock.lang.Specification
 
-/**
- * Created with IntelliJ IDEA.
- * User: skrymer
- * Date: 30/11/14
- * Time: 7:25 PM
- * To change this template use File | Settings | File Templates.
- */
 class StubServiceSpec extends Specification {
     def StubService sut;
     def StubRepository mockStubRepository
