@@ -66,7 +66,7 @@
                             <span>delete</span>
                         </button>
                         <button id="executeScript" type="button" class="btn btn-info btn-md"
-                                ng-click="">
+                                ng-click="executeScript()">
                             <span>execute</span>
                         </button>
                     </div>
@@ -75,25 +75,45 @@
         </div>
     </div>
 
-    <script>
-        $(document).ready(function () {
-            configureEditor()
+    <div class="modal fade" id="scriptExecutionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span
+                            aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Script execution</h4>
+                </div>
+                <div class="modal-body">
+                    Some script result
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        configureEditor()
+    });
+
+    function configureEditor() {
+        var editor = ace.edit("editor");
+
+        editor.setTheme("ace/theme/xcode");
+        editor.getSession().setMode("ace/mode/groovy");
+        editor.commands.addCommand({
+            name: 'save',
+            bindKey: {win: 'Ctrl-S', mac: 'Command-M'},
+            exec: function () {
+                saveScript();
+            },
+            readOnly: false
         });
-
-        function configureEditor() {
-            var editor = ace.edit("editor");
-
-            editor.setTheme("ace/theme/xcode");
-            editor.getSession().setMode("ace/mode/groovy");
-            editor.commands.addCommand({
-                name: 'save',
-                bindKey: {win: 'Ctrl-S', mac: 'Command-M'},
-                exec: function () {
-                    saveScript();
-                },
-                readOnly: false
-            });
-            document.getElementById('editor').style.fontSize = '16px';
-        }
-
-    </script>
+        document.getElementById('editor').style.fontSize = '16px';
+    }
+</script>

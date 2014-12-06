@@ -74,6 +74,10 @@ function StubManagementController($scope, $http) {
                 $.notify("BOOM! Could not delete script", "error")
             })
     }
+
+    $scope.executeScript = function () {
+        $('#scriptExecutionModal').modal()
+    }
 }
 
 function setEditorContent(content) {

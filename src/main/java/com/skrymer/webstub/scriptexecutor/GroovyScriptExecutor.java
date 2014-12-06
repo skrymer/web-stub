@@ -5,7 +5,6 @@ import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.codehaus.groovy.control.CompilationFailedException;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,12 +30,14 @@ public class GroovyScriptExecutor implements ScriptExecutor {
     try {
       Binding bindings = createBindings(script, request, response);
       executeScript(script, bindings);
-    } catch (IOException ioe) {
-      LOG.error("Could not execute script", ioe);
-      throw new CouldNotExecuteScriptException("Could not execute script", ioe);
-    } catch (CompilationFailedException cfe) {
-      LOG.error("Could not execute script", cfe);
-      throw new CouldNotExecuteScriptException("Could not execute script", cfe);
+    } catch (Exception e) {
+      LOG.error("Could not execute script", e);
+
+      if (e instanceof ScriptContentIsEmptyException) {
+        throw (ScriptContentIsEmptyException) e;
+      }
+
+      throw new CouldNotExecuteScriptException("Could not execute script", e);
     }
   }
 
