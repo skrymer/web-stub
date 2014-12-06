@@ -1,62 +1,95 @@
-<div class="row" ng-controller="StubManagementController" >
-    <div class="col-md-9">
+<div class="row" ng-controller="StubManagementController">
+    <div class="col-md-8">
         <pre id="editor"></pre>
-        <div>
-            <button type="button" class="btn btn-primary btn-lg" ng-click="saveScript()">
-                <span class="glyphicon glyphicon-save">save</span>
-            </button>
-        </div>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-4">
         <div class="panel panel-default">
             <div class="panel-heading">Stub controls</div>
-            <div class="row">
-                <div class="col-md-7"><label for="selectStub">Select stub</label></div>
-                <div class="col-md-5">
-                    <select id="selectStub">
-                        <option ng-repeat="stub in stubs" ng-click="setActiveStub($index)">{{stub.name}}</option>
-                    </select>
+            <div id="controls" style="padding: 5px">
+                <div class="row">
+                    <div class="col-md-6"><label for="selectStub">Select stub</label></div>
+                    <div class="col-md-6">
+                        <select id="selectStub">
+                            <option ng-repeat="stub in stubs" ng-click="setActiveStub($index)">{{stub.name}}</option>
+                        </select>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md-7"><label for="selectActiveScript">Select active script</label></div>
-                <div class="col-md-5">
-                    <select id="selectActiveScript">
-                        <option ng-repeat="script in activeStub.scripts" ng-click="setActiveScript(script)">{{script.name}}</option>
-                    </select>
+                <div class="row">
+                    <div class="col-md-6"><label for="selectActiveScript">Active script</label></div>
+                    <div class="col-md-6">
+                        {{activeStub.activeScript.name}}
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md-7"><label for="scriptEditing">Edit script</label></div>
-                <div class="col-md-5">
-                    <select id="scriptEditing">
-                        <option data-ng-repeat="script in activeStub.scripts" ng-click="editScript(script)">{{script.name}}</option>
-                    </select>
+                <div class="row">
+                    <div class="col-md-6"><label for="selectActiveScript">Set active script</label></div>
+                    <div class="col-md-6">
+                        <select id="selectActiveScript">
+                            <option ng-repeat="script in activeStub.scripts" ng-click="setActiveScript(script)">
+                                {{script.name}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <button id="deleteStub" type="button" class="btn btn-danger btn-md"
+                                ng-click="deleteActiveStub()">
+                            <span>delete</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+    <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">Script controls</div>
+            <div id="scriptcontrols" style="padding: 5px">
+                <div class="row">
+                    <div class="col-md-6"><label for="selectScript">Select script</label></div>
+                    <div class="col-md-6">
+                        <select id="selectScript">
+                            <option data-ng-repeat="script in activeStub.scripts" ng-click="editScript(script)">
+                                {{script.name}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <button id="saveScript" type="button" class="btn btn-primary btn-md"
+                                ng-click="saveScript()">
+                            <span>save</span>
+                        </button>
+                        <button id="deleteScript" type="button" class="btn btn-danger btn-md"
+                                ng-click="">
+                            <span>delete</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<script>
-    $(document).ready(function() {
-        configureEditor()
-    });
-
-    function configureEditor() {
-        var editor = ace.edit("editor");
-
-        editor.setTheme("ace/theme/xcode");
-        editor.getSession().setMode("ace/mode/groovy");
-        editor.commands.addCommand({
-            name: 'save',
-            bindKey: {win: 'Ctrl-S',  mac: 'Command-M'},
-            exec: function() {
-                saveScript();
-            },
-            readOnly: false
+    <script>
+        $(document).ready(function () {
+            configureEditor()
         });
-        document.getElementById('editor').style.fontSize='16px';
-    }
 
-</script>
+        function configureEditor() {
+            var editor = ace.edit("editor");
+
+            editor.setTheme("ace/theme/xcode");
+            editor.getSession().setMode("ace/mode/groovy");
+            editor.commands.addCommand({
+                name: 'save',
+                bindKey: {win: 'Ctrl-S', mac: 'Command-M'},
+                exec: function () {
+                    saveScript();
+                },
+                readOnly: false
+            });
+            document.getElementById('editor').style.fontSize = '16px';
+        }
+
+    </script>
