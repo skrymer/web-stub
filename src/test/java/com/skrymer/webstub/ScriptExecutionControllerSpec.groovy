@@ -13,13 +13,6 @@ import spock.lang.Specification
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 
-/**
- * Created with IntelliJ IDEA.
- * User: skrymer
- * Date: 30/11/14
- * Time: 7:15 PM
- * To change this template use File | Settings | File Templates.
- */
 @WebAppConfiguration
 @ContextConfiguration(classes = TestConfig.class)
 class ScriptExecutionControllerSpec extends Specification {

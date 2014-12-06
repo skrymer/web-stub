@@ -12,6 +12,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.web.context.WebApplicationContext
 import spock.lang.Specification
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
@@ -52,5 +53,25 @@ class StubControllerSpec extends Specification {
         Stub createdStub = mongo.findAll(Stub.class).get(0)
         createdStub.name == "awesome"
         createdStub.scripts.size() == 2
+    }
+
+    def "Test delete stub"() {
+        given: "A stub to delete"
+        mongo.insert(stub())
+        mongo.findAll(Stub.class).size() == 1
+
+        when: "Deleting stub"
+        def response = mockMvc.perform(delete("/api/awesome"))
+
+        then: "The stub is deleted"
+        response.andExpect(status().isOk())
+        mongo.findAll(Stub.class).size() == 0
+    }
+
+    def stub() {
+        def script1 = new com.skrymer.webstub.domain.Script(1, "script1", "Some content")
+        def script2 = new com.skrymer.webstub.domain.Script(2, "script2", "Some content2")
+
+        return new Stub("awesome", [script1, script2])
     }
 }
