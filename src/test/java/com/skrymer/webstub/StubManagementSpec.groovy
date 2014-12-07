@@ -22,15 +22,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @WebAppConfiguration
 @ContextConfiguration(classes = TestConfig.class)
-class StubControllerSpec extends Specification {
+class StubManagementSpec extends Specification {
     MockMvc mockMvc;
-
     @Autowired
     WebApplicationContext wac;
-
     @Autowired
     MongoTemplate mongo;
-
     @Autowired
     Mongo fongo;
 
@@ -57,15 +54,15 @@ class StubControllerSpec extends Specification {
 
     def "Test delete stub"() {
         given: "A stub to delete"
-        mongo.insert(stub())
-        mongo.findAll(Stub.class).size() == 1
+            mongo.insert(stub())
+            def stub = mongo.findAll(Stub.class)[0]
 
-        when: "Deleting stub"
-        def response = mockMvc.perform(delete("/api/awesome"))
+        when: "Deleting a stub stub by id"
+            def response = mockMvc.perform(delete("/api/{id}", stub.getId()))
 
-        then: "The stub is deleted"
-        response.andExpect(status().isOk())
-        mongo.findAll(Stub.class).size() == 0
+        then: "The stub gets deleted"
+            response.andExpect(status().isOk())
+            mongo.findAll(Stub.class).size() == 0
     }
 
     def stub() {

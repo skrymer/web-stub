@@ -67,15 +67,15 @@ class StubRepositorySpec extends Specification {
         mongoTemplate.findAll(Stub.class).get(0).getActiveScript().getName() == activeScript.getName()
     }
 
-    def "delete stub by name"() {
+    def "delete stub by id"() {
         setup:
         mongoTemplate.save(stub())
         def Stub existingStub = mongoTemplate.findAll(Stub.class).get(0)
 
-        when: "Deleting a stub"
-        sut.deleteStubByName(existingStub.getName())
+        when: "Deleting a stub by id"
+        sut.delete(existingStub.getId())
 
-        then: "the stub is deleted"
+        then: "the stub gets deleted"
         mongoTemplate.findAll(Stub.class).size() == 0
     }
 

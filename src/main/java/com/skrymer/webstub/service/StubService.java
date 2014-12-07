@@ -10,9 +10,9 @@ public interface StubService {
 
   Stub updateStub(Stub stub);
 
-  List<Stub> getAll();
+  void deleteStubById(String id);
 
-  void deleteStubByName(String stubName);
+  List<Stub> getAll();
 
   Stub findStubByName(String name);
 }

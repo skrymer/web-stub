@@ -1,6 +1,7 @@
 package com.skrymer.webstub
 
 import com.skrymer.webstub.domain.Stub
+import com.skrymer.webstub.handler.HttRequestContext
 import com.skrymer.webstub.handler.HttpRequestHandler
 import com.skrymer.webstub.handler.NoActiveScriptIsSetException
 import com.skrymer.webstub.handler.StubNameResolver
@@ -17,6 +18,7 @@ class HttpRequestHandlerSpec extends Specification {
     def sut
     def request
     def response
+    def requestContext;
 
     def setup() {
         mockScriptExecutor = Mock(ScriptExecutor)
@@ -24,6 +26,7 @@ class HttpRequestHandlerSpec extends Specification {
         mockStubNameResolver = Mock(StubNameResolver)
         request = new MockHttpServletRequest()
         response = new MockHttpServletResponse()
+        requestContext = new HttRequestContext(request, response)
 
         sut = new HttpRequestHandler(mockScriptExecutor, mockStubService, mockStubNameResolver)
     }
@@ -33,7 +36,7 @@ class HttpRequestHandlerSpec extends Specification {
             request.setParameter("stub", "mystub")
 
         when: "handling a request"
-            sut.handle(request, response)
+            sut.handle(requestContext)
 
         then: "execute the active script on the stub with name mystub"
             1 * mockStubNameResolver.resolve(_) >> "mystub"
@@ -49,7 +52,7 @@ class HttpRequestHandlerSpec extends Specification {
             stub.setActiveScript(null)
 
         when: "handling a request"
-            sut.handle(request, response)
+            sut.handle(requestContext)
 
         then: "throw NoActiveScriptIsSetException"
             1 * mockStubNameResolver.resolve(_) >> "mystub"

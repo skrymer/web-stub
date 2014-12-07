@@ -1,8 +1,15 @@
 package com.skrymer.webstub.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.apache.commons.codec.binary.Base64;
+
 public class Script {
   private Integer id;
   private String name, content;
+
+  public static String encode(String content){
+    return new String(Base64.encodeBase64(content.getBytes()));
+  }
 
   public Script() {
   }
@@ -23,6 +30,11 @@ public class Script {
 
   public String getContent() {
     return content;
+  }
+
+  @JsonIgnore
+  public String getDecodedContent() {
+    return new String(Base64.decodeBase64(content));
   }
 
   @Override

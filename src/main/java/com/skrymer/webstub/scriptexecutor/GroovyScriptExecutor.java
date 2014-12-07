@@ -37,6 +37,9 @@ public class GroovyScriptExecutor implements ScriptExecutor {
         throw (ScriptContentIsEmptyException) e;
       }
 
+      //Clear any data that might have been written to the response
+      response.reset();
+
       throw new CouldNotExecuteScriptException("Could not execute script", e);
     }
   }
@@ -62,7 +65,7 @@ public class GroovyScriptExecutor implements ScriptExecutor {
   private void executeScript(Script script, Binding bindings) {
     throwScriptContentIsEmptyExceptionIfEmpty(script);
 
-    new GroovyShell(bindings).evaluate(script.getContent());
+    new GroovyShell(bindings).evaluate(script.getDecodedContent());
   }
 
   private void throwScriptContentIsEmptyExceptionIfEmpty(Script script) {

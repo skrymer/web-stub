@@ -56,7 +56,7 @@ function StubManagementController($scope, $http) {
     }
 
     $scope.deleteActiveStub = function () {
-        $http.delete('/api/' + $scope.activeStub.name)
+        $http.delete('/api/' + $scope.activeStub.id)
             .success(function () {
                 //Remove deleted stub from scope
                 $scope.stubs = $.map($scope.stubs, function (stub) {
@@ -75,17 +75,26 @@ function StubManagementController($scope, $http) {
             })
     }
 
-    $scope.executeScript = function () {
-        $('#scriptExecutionModal').modal()
+    $scope.executeScript = function() {
+        $http.post('/script/execution/', getEditorContent())
+            .success(function(data){
+                ace.edit("scriptExecutionEditor").setValue(data)
+                $('#scriptExecutionModal').modal()
+
+            })
+            .error(function(error){
+                ace.edit("scriptExecutionEditor").setValue(JSON.stringify(error, null, '\t'))
+                $('#scriptExecutionModal').modal()
+            })
     }
 }
 
 function setEditorContent(content) {
-    ace.edit("editor").setValue(content)
+    ace.edit("editor").setValue(atob(content))
 }
 
 function getEditorContent() {
-    return ace.edit("editor").getValue()
+    return btoa(ace.edit("editor").getValue())
 }
 
 function StubCreationController($scope, $http) {

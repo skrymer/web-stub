@@ -7,13 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * Created by skrymer on 20/06/14.
  */
 @Component
-public class HttpRequestHandler implements RequestHandler<HttpServletRequest, HttpServletResponse> {
+public class HttpRequestHandler implements RequestHandler<HttRequestContext> {
   private StubService stubService;
   private ScriptExecutor scriptExecutor;
   private StubNameResolver stubNameResolver;
@@ -26,22 +25,21 @@ public class HttpRequestHandler implements RequestHandler<HttpServletRequest, Ht
   }
 
   @Override
-  public void handle(HttpServletRequest request, HttpServletResponse response) {
-    Stub stub = findStubForRequest(request);
-    executeActiveScript(stub, request, response);
+  public void handle(HttRequestContext context) {
+    Stub stub = findStubForRequest(context.getRequest());
+    executeActiveScript(stub, context);
   }
 
   private Stub findStubForRequest(HttpServletRequest request) {
     String name = stubNameResolver.resolve(request);
-
     return stubService.findStubByName(name);
   }
 
-  private void executeActiveScript(Stub stub, HttpServletRequest request, HttpServletResponse response) {
+  private void executeActiveScript(Stub stub, HttRequestContext context) {
     if (stub.getActiveScript() == null) {
       throw new NoActiveScriptIsSetException("No active script is set for stub " + stub.getName());
     }
 
-    scriptExecutor.execute(stub.getActiveScript(), request, response);
+    scriptExecutor.execute(stub.getActiveScript(), context.getRequest(), context.getResponse());
   }
 }
