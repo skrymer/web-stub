@@ -2,13 +2,10 @@ package com.skrymer.webstub.scriptexecutor;
 
 import com.skrymer.webstub.domain.Script;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 /**
  * A groovy script executor
  */
-public interface ScriptExecutor {
+public interface ScriptExecutor<T> {
 
   /**
    * The following variables will be present in the script when it's executed
@@ -20,6 +17,7 @@ public interface ScriptExecutor {
    * log - the log
    *
    * @param script
+   * @param context - the context that the script will have access to
    */
-  void execute(Script script, HttpServletRequest request, HttpServletResponse response);
+  void execute(Script script, T context);
 }

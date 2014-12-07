@@ -40,6 +40,6 @@ public class HttpRequestHandler implements RequestHandler<HttRequestContext> {
       throw new NoActiveScriptIsSetException("No active script is set for stub " + stub.getName());
     }
 
-    scriptExecutor.execute(stub.getActiveScript(), context.getRequest(), context.getResponse());
+    scriptExecutor.execute(stub.getActiveScript(), context);
   }
 }

@@ -1,6 +1,7 @@
 package com.skrymer.webstub.controller;
 
 import com.skrymer.webstub.domain.Script;
+import com.skrymer.webstub.handler.HttRequestContext;
 import com.skrymer.webstub.scriptexecutor.ScriptExecutor;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,6 @@ public class ScriptExecutionController {
     String scriptContent = IOUtils.toString(request.getReader());
     Script script = new Script(1, "ondemand", scriptContent);
 
-    scriptExecutor.execute(script, request, response);
+    scriptExecutor.execute(script, new HttRequestContext(request, response));
   }
 }

@@ -41,7 +41,7 @@ class HttpRequestHandlerSpec extends Specification {
         then: "execute the active script on the stub with name mystub"
             1 * mockStubNameResolver.resolve(_) >> "mystub"
             1 * mockStubService.findStubByName("mystub") >> stub()
-            1 * mockScriptExecutor.execute(_, _, _)
+            1 * mockScriptExecutor.execute(_, _)
     }
 
     def "throw NoActiveScriptIsSetException if no active script is set"() {

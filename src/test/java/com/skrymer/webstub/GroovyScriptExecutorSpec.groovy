@@ -1,5 +1,6 @@
 package com.skrymer.webstub
 
+import com.skrymer.webstub.handler.HttRequestContext
 import com.skrymer.webstub.scriptexecutor.CouldNotExecuteScriptException
 import com.skrymer.webstub.scriptexecutor.GroovyScriptExecutor
 import spock.lang.Specification
@@ -11,6 +12,7 @@ class GroovyScriptExecutorSpec extends Specification {
     def sut = new GroovyScriptExecutor()
     def response = Mock(HttpServletResponse.class)
     def request = Mock(HttpServletRequest.class)
+    def requestContext = new HttRequestContext(request, response)
     def scriptContent = com.skrymer.webstub.domain.Script.encode("""
                                                                     request.getMethod()
                                                                     response.getStatus()
@@ -20,7 +22,7 @@ class GroovyScriptExecutorSpec extends Specification {
             def com.skrymer.webstub.domain.Script script = new com.skrymer.webstub.domain.Script(1, "name", scriptContent)
 
         when: "executing a script"
-            sut.execute(script, request, response)
+            sut.execute(script, requestContext)
 
         then: "execute the script"
             1 * request.getMethod()
@@ -29,12 +31,12 @@ class GroovyScriptExecutorSpec extends Specification {
 
     def "throw CouldNotExecuteScriptException if script could not be executed"() {
         given: "a faulty script"
-        def com.skrymer.webstub.domain.Script script = new com.skrymer.webstub.domain.Script(1, "name", """sonni.unknownMethod()""")
+            def com.skrymer.webstub.domain.Script script = new com.skrymer.webstub.domain.Script(1, "name", """sonni.unknownMethod()""")
 
         when: "executing a script"
-        sut.execute(script, request, response)
+            sut.execute(script, requestContext)
 
         then: "throw CouldNotExecuteScriptException"
-        thrown(CouldNotExecuteScriptException.class)
+            thrown(CouldNotExecuteScriptException.class)
     }
 }
